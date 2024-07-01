@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "printf",
   "rules": {
     "format_string": {
@@ -149,10 +150,6 @@
             {
               "type": "STRING",
               "value": "I64"
-            },
-            {
-              "type": "STRING",
-              "value": "w"
             }
           ]
         }
