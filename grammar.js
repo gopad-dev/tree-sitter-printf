@@ -42,7 +42,8 @@ module.exports = grammar({
       'I',
       'I32',
       'I64',
-      'w',
+// this clashes with fmt.Errorf %w in golang
+//      'w',
     ))),
 
     _text: _ => prec(-1, /[^%]+/)

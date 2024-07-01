@@ -149,10 +149,6 @@
             {
               "type": "STRING",
               "value": "I64"
-            },
-            {
-              "type": "STRING",
-              "value": "w"
             }
           ]
         }

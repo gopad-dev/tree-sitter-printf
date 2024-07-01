@@ -1,7 +1,6 @@
 #include "tree_sitter/parser.h"
 
 #if defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
@@ -156,41 +155,43 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
   switch (state) {
     case 0:
       if (eof) ADVANCE(6);
-      if (lookahead == '%') ADVANCE(8);
-      if (lookahead == '.') ADVANCE(14);
-      if (lookahead == '0') ADVANCE(13);
-      if (lookahead == 'I') ADVANCE(16);
-      if (lookahead == 'L' ||
-          lookahead == 'j' ||
-          lookahead == 't' ||
-          lookahead == 'w' ||
-          lookahead == 'z') ADVANCE(15);
-      if (lookahead == 'h') ADVANCE(17);
-      if (lookahead == 'l') ADVANCE(18);
+      ADVANCE_MAP(
+        '%', 8,
+        '.', 14,
+        '0', 13,
+        'I', 16,
+        'h', 17,
+        'l', 18,
+        'L', 15,
+        'j', 15,
+        't', 15,
+        'z', 15,
+      );
       if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') SKIP(0)
+          lookahead == ' ') SKIP(0);
       if (lookahead == '*' ||
           ('1' <= lookahead && lookahead <= '9')) ADVANCE(13);
       if (('A' <= lookahead && lookahead <= 'Z') ||
           ('a' <= lookahead && lookahead <= 'y')) ADVANCE(9);
       END_STATE();
     case 1:
-      if (lookahead == ' ') ADVANCE(11);
-      if (lookahead == '.') ADVANCE(14);
-      if (lookahead == '0') ADVANCE(12);
-      if (lookahead == 'I') ADVANCE(16);
-      if (lookahead == 'L' ||
-          lookahead == 'j' ||
-          lookahead == 't' ||
-          lookahead == 'w' ||
-          lookahead == 'z') ADVANCE(15);
-      if (lookahead == 'h') ADVANCE(17);
-      if (lookahead == 'l') ADVANCE(18);
-      if (lookahead == '#' ||
-          lookahead == '\'' ||
-          lookahead == '+' ||
-          lookahead == '-') ADVANCE(10);
-      if (('\t' <= lookahead && lookahead <= '\r')) SKIP(1)
+      ADVANCE_MAP(
+        ' ', 11,
+        '.', 14,
+        '0', 12,
+        'I', 16,
+        'h', 17,
+        'l', 18,
+        '#', 10,
+        '\'', 10,
+        '+', 10,
+        '-', 10,
+        'L', 15,
+        'j', 15,
+        't', 15,
+        'z', 15,
+      );
+      if (('\t' <= lookahead && lookahead <= '\r')) SKIP(1);
       if (lookahead == '*' ||
           ('1' <= lookahead && lookahead <= '9')) ADVANCE(13);
       if (('A' <= lookahead && lookahead <= 'Z') ||
@@ -204,7 +205,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 4:
       if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') SKIP(4)
+          lookahead == ' ') SKIP(4);
       if (('A' <= lookahead && lookahead <= 'Z') ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(9);
       END_STATE();
@@ -233,20 +234,21 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 11:
       ACCEPT_TOKEN(sym_flags);
-      if (lookahead == ' ') ADVANCE(11);
-      if (lookahead == '0') ADVANCE(12);
-      if (lookahead == 'I') ADVANCE(16);
-      if (lookahead == 'L' ||
-          lookahead == 'j' ||
-          lookahead == 't' ||
-          lookahead == 'w' ||
-          lookahead == 'z') ADVANCE(15);
-      if (lookahead == 'h') ADVANCE(17);
-      if (lookahead == 'l') ADVANCE(18);
-      if (lookahead == '#' ||
-          lookahead == '\'' ||
-          lookahead == '+' ||
-          lookahead == '-') ADVANCE(10);
+      ADVANCE_MAP(
+        ' ', 11,
+        '0', 12,
+        'I', 16,
+        'h', 17,
+        'l', 18,
+        '#', 10,
+        '\'', 10,
+        '+', 10,
+        '-', 10,
+        'L', 15,
+        'j', 15,
+        't', 15,
+        'z', 15,
+      );
       END_STATE();
     case 12:
       ACCEPT_TOKEN(sym_flags);
@@ -484,15 +486,15 @@ static const uint32_t ts_small_parse_table_map[] = {
 static const TSParseActionEntry ts_parse_actions[] = {
   [0] = {.entry = {.count = 0, .reusable = false}},
   [1] = {.entry = {.count = 1, .reusable = false}}, RECOVER(),
-  [3] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format_string, 0),
+  [3] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format_string, 0, 0, 0),
   [5] = {.entry = {.count = 1, .reusable = false}}, SHIFT(3),
   [7] = {.entry = {.count = 1, .reusable = false}}, SHIFT(4),
   [9] = {.entry = {.count = 1, .reusable = true}}, SHIFT(3),
-  [11] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_format_string_repeat1, 2),
-  [13] = {.entry = {.count = 2, .reusable = false}}, REDUCE(aux_sym_format_string_repeat1, 2), SHIFT_REPEAT(2),
-  [16] = {.entry = {.count = 2, .reusable = false}}, REDUCE(aux_sym_format_string_repeat1, 2), SHIFT_REPEAT(4),
-  [19] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_format_string_repeat1, 2), SHIFT_REPEAT(2),
-  [22] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format_string, 1),
+  [11] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_format_string_repeat1, 2, 0, 0),
+  [13] = {.entry = {.count = 2, .reusable = false}}, REDUCE(aux_sym_format_string_repeat1, 2, 0, 0), SHIFT_REPEAT(2),
+  [16] = {.entry = {.count = 2, .reusable = false}}, REDUCE(aux_sym_format_string_repeat1, 2, 0, 0), SHIFT_REPEAT(4),
+  [19] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_format_string_repeat1, 2, 0, 0), SHIFT_REPEAT(2),
+  [22] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format_string, 1, 0, 0),
   [24] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2),
   [26] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2),
   [28] = {.entry = {.count = 1, .reusable = false}}, SHIFT(5),
@@ -500,20 +502,20 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [32] = {.entry = {.count = 1, .reusable = false}}, SHIFT(11),
   [34] = {.entry = {.count = 1, .reusable = false}}, SHIFT(13),
   [36] = {.entry = {.count = 1, .reusable = false}}, SHIFT(16),
-  [38] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 2),
-  [40] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 2),
+  [38] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 2, 0, 0),
+  [40] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 2, 0, 0),
   [42] = {.entry = {.count = 1, .reusable = false}}, SHIFT(7),
   [44] = {.entry = {.count = 1, .reusable = true}}, SHIFT(12),
   [46] = {.entry = {.count = 1, .reusable = true}}, SHIFT(14),
   [48] = {.entry = {.count = 1, .reusable = true}}, SHIFT(18),
-  [50] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 3),
-  [52] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 3),
-  [54] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 4),
-  [56] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 4),
-  [58] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 5),
-  [60] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 5),
-  [62] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 6),
-  [64] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 6),
+  [50] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 3, 0, 0),
+  [52] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 3, 0, 0),
+  [54] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 4, 0, 0),
+  [56] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 4, 0, 0),
+  [58] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 5, 0, 0),
+  [60] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 5, 0, 0),
+  [62] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_format, 6, 0, 0),
+  [64] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_format, 6, 0, 0),
   [66] = {.entry = {.count = 1, .reusable = false}}, SHIFT(8),
   [68] = {.entry = {.count = 1, .reusable = true}}, SHIFT(15),
   [70] = {.entry = {.count = 1, .reusable = true}}, SHIFT(19),
@@ -529,11 +531,15 @@ static const TSParseActionEntry ts_parse_actions[] = {
 #ifdef __cplusplus
 extern "C" {
 #endif
-#ifdef _WIN32
-#define extern __declspec(dllexport)
+#ifdef TREE_SITTER_HIDE_SYMBOLS
+#define TS_PUBLIC
+#elif defined(_WIN32)
+#define TS_PUBLIC __declspec(dllexport)
+#else
+#define TS_PUBLIC __attribute__((visibility("default")))
 #endif
 
-extern const TSLanguage *tree_sitter_printf(void) {
+TS_PUBLIC const TSLanguage *tree_sitter_printf(void) {
   static const TSLanguage language = {
     .version = LANGUAGE_VERSION,
     .symbol_count = SYMBOL_COUNT,
